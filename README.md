@@ -1,27 +1,37 @@
-# Jsonpath
+# JSON Path Finder
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.8.
+JSON Path Finder is a user-friendly tool designed to simplify the process of finding JSON paths within a document. It provides an intuitive interface where you can paste a JSON document and click on any property. The tool will then calculate and display the JSON path for the selected value.
 
-## Development server
+<img src="img.png" alt="JSON Path Finder Screenshot" width="700"/>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## How to Use
 
-## Code scaffolding
+1. Open the JSON Path Finder in your browser.
+2. Paste your JSON document into the provided text area.
+3. Click on any property within the pasted JSON document.
+4. The tool will calculate and display the JSON path for the selected property.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Running the Tool Locally
 
-## Build
+To run JSON Path Finder on your local machine, follow these steps:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install the necessary dependencies by running `npm install`.
+4. Start the development server by running `ng serve`.
+5. Open your browser and navigate to `http://localhost:4200/`.
 
-## Running unit tests
+The application will automatically reload if you change any of the source files.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Building the Project
 
-## Running end-to-end tests
+To build the project, run `ng build`. The build artifacts will be stored in the `dist/` directory.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Running Tests
 
-## Further help
+- To execute unit tests, run `ng test`. The tests are executed via [Karma](https://karma-runner.github.io).
+- To execute end-to-end tests, run `ng e2e`. You need to first add a package that implements end-to-end testing capabilities to use this command.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Further Help
+
+For more help on the Angular CLI, use `ng help` or check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
