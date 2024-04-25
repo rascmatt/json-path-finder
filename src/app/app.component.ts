@@ -32,14 +32,15 @@ export class AppComponent implements AfterViewInit {
   title = 'Json Path Finder';
 
   @ViewChild("editor") private editorRef: ElementRef<HTMLElement> = {} as ElementRef<HTMLElement>;
+  @ViewChild("result") private resultRef: ElementRef<HTMLElement> = {} as ElementRef<HTMLElement>;
   editor: Ace.Editor = {} as Editor;
+  result: Ace.Editor = {} as Editor;
 
   inputJson: string = '{"firstName":"John","lastName":"doe","age":26,"address":{"streetAddress":"naist street","city":"Nara","postalCode":"630-0192"},"phoneNumbers":[{"type":"iPhone","number":"0123-4567-8888"},{"type":"home","number":"0123-4567-8910"}]}';
 
   matchAll: boolean = false;
   selectedValue: string = '';
   jsonPath: string = '';
-  evaluatedValue: string = '';
 
   constructor() {
     this.onFormatJson();
@@ -65,6 +66,19 @@ export class AppComponent implements AfterViewInit {
     this.editor.on('change', () => {
       this.inputJson = this.editor.getValue();
     });
+
+    this.result = ace.edit(this.resultRef.nativeElement);
+    this.result.setTheme("ace/theme/textmate");
+    this.result.session.setMode("ace/mode/json");
+    this.result.setOptions({
+      fontSize: "14px",
+      showPrintMargin: false,
+      showLineNumbers: true,
+      tabSize: 2,
+    });
+
+    this.result.setValue('');
+    this.result.clearSelection();
   }
 
   onFormatJson() {
@@ -81,6 +95,16 @@ export class AppComponent implements AfterViewInit {
     if (this.editor?.setValue) {
       this.editor.setValue(this.inputJson);
     }
+  }
+
+  onChangeJsonPath() {
+    const evaluated = JSONPath({
+      path: this.jsonPath,
+      json: JSON.parse(this.inputJson),
+    });
+
+    this.result.setValue(JSON.stringify(evaluated, null, 4));
+    this.result.clearSelection();
   }
 
   onSelectionChange() {
@@ -103,7 +127,8 @@ export class AppComponent implements AfterViewInit {
       json: JSON.parse(this.inputJson),
     });
 
-    this.evaluatedValue = evaluated.length > 1 ? evaluated.join(', ') : evaluated[0] + '';
+    this.result.setValue(JSON.stringify(evaluated, null, 4));
+    this.result.clearSelection();
   }
 
   public formatJson(input: string): string {
