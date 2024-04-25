@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import * as Clarinet from 'clarinet';
+import {JSONPath} from "jsonpath-plus";
 
 export interface Token {
   type: 'o' | 'a' | 'k';
@@ -27,10 +28,11 @@ export interface KeyToken extends Token {
 export class AppComponent {
   title = 'jsonpath';
 
-  inputJson: string = '["a", "b", "c"]';
+  inputJson: string = '{"key1": "value1", "key2": { "k2.1": "v2.1" }, "key3": ["k3.v1", {"k3.k2": "k3.v2"}], "key4": "value4"}';
 
   selectedValue: string = '';
   jsonPath: string = '';
+  evaluatedValue: string = '';
 
   onFormatJson() {
     this.inputJson = this.formatJson(this.inputJson);
@@ -50,6 +52,16 @@ export class AppComponent {
 
     this.jsonPath = result.path;
     this.selectedValue = result.value + '';
+
+    const evaluated = JSONPath({
+      path: result.path,
+      json: JSON.parse(this.inputJson),
+    });
+    this.evaluatedValue = evaluated + '';
+
+    if (this.evaluatedValue != this.selectedValue) {
+      window.alert('The selected value does not match the evaluated value.');
+    }
   }
 
   public formatJson(input: string): string {
@@ -77,19 +89,11 @@ export class AppComponent {
     const stack: (ObjectToken | ArrayToken | KeyToken)[] = [];
 
     parser.onopenobject = key => {
-      if (stack[stack.length - 1]?.type == 'a') {
-        const arrayToken = stack[stack.length - 1] as ArrayToken;
-        arrayToken.index++;
-      }
       stack.push({'type': 'o'})
       stack.push({'type': 'k', 'value': key});
     };
 
     parser.onopenarray = () => {
-      if (stack[stack.length - 1]?.type == 'a') {
-        const arrayToken = stack[stack.length - 1] as ArrayToken;
-        arrayToken.index++;
-      }
       stack.push({type: 'a', index: 0});
     };
 
@@ -111,6 +115,11 @@ export class AppComponent {
       } else {
         vEnd = parser.position;
         vStart = vEnd - ('' + value).length;
+      }
+
+      // If the end of the value is a comma followed by a newline, we will still select the value.
+      if (input[vEnd] == ',' && input[vEnd + 1] == '\n') {
+        vEnd++;
       }
 
       if (cursorIndex >= vStart && cursorIndex <= vEnd) {

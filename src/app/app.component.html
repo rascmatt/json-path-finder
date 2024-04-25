@@ -14,7 +14,7 @@
         <form clrForm class="clr-col-12">
           <clr-textarea-container>
             <label class="clr-col-12">JSON Input</label>
-            <textarea clrTextarea placeholder="{ &quot;...&quot;: &quot;...&quot; }"
+            <textarea clrTextarea placeholder="{ ... }"
                       name="input-json" class="clr-col-12 json-area" [(ngModel)]="inputJson"
                       (selectionchange)="onSelectionChange($event)"></textarea>
             <clr-control-helper>
@@ -26,13 +26,18 @@
           </clr-textarea-container>
           <clr-input-container>
             <label class="clr-col-12">Selected Value</label>
-            <input class="clr-col-12" clrInput placeholder="Value" name="selected-value" disabled
+            <input class="clr-col-12" clrInput placeholder="Value" name="selected-value"
                    [(ngModel)]="selectedValue" size="40">
           </clr-input-container>
           <clr-input-container>
             <label class="clr-col-12">JSON Path</label>
-            <input class="clr-col-12" clrInput placeholder="$.path.to.value" name="json-path" disabled
+            <input class="clr-col-12" clrInput placeholder="$.path.to.value" name="json-path"
                    [(ngModel)]="jsonPath" size="40">
+          </clr-input-container>
+          <clr-input-container>
+            <label class="clr-col-12">Evaluated</label>
+            <input class="clr-col-12" clrInput placeholder="Value" name="evaluated"
+                   [(ngModel)]="evaluatedValue" size="40">
           </clr-input-container>
         </form>
       </div>
