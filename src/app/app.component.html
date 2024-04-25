@@ -1,0 +1,42 @@
+<div class="main-container">
+  <!--<div class="alert alert-app-level"></div>-->
+  <header class="header header-6">
+    <div class="branding">
+      <a href="javascript:void(0)">
+        <cds-icon shape="details"></cds-icon>
+        <span class="title">Json Path</span>
+      </a>
+    </div>
+  </header>
+  <div class="content-container">
+    <div class="content-area">
+      <div class="content-banner clr-row clr-col-8">
+        <form clrForm class="clr-col-12">
+          <clr-textarea-container>
+            <label class="clr-col-12">JSON Input</label>
+            <textarea clrTextarea placeholder="{ &quot;...&quot;: &quot;...&quot; }"
+                      name="input-json" class="clr-col-12 json-area" [(ngModel)]="inputJson"
+                      (selectionchange)="onSelectionChange($event)"></textarea>
+            <clr-control-helper>
+              <div class="btn-group">
+                <button class="btn slim" (click)="onFormatJson()">Format</button>
+                <button class="btn slim" (click)="onMinifyJson()">Minify</button>
+              </div>
+            </clr-control-helper>
+          </clr-textarea-container>
+          <clr-input-container>
+            <label class="clr-col-12">Selected Value</label>
+            <input class="clr-col-12" clrInput placeholder="Value" name="selected-value" disabled
+                   [(ngModel)]="selectedValue" size="40">
+          </clr-input-container>
+          <clr-input-container>
+            <label class="clr-col-12">JSON Path</label>
+            <input class="clr-col-12" clrInput placeholder="$.path.to.value" name="json-path" disabled
+                   [(ngModel)]="jsonPath" size="40">
+          </clr-input-container>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
