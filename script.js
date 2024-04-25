@@ -2,7 +2,9 @@ evalInput = () => {
 
 	const input = document.getElementById('jsonInput').value;
   var cursorPosition = document.getElementById("jsonInput").selectionStart;
+  let matched = false;
 
+  // https://github.com/dscape/clarinet
   const parser = clarinet.parser();
   
   const stack = [];
@@ -28,22 +30,36 @@ evalInput = () => {
   };
 
   parser.onvalue = value => {
-  	let vStart = 0;
+
+    let vStart = 0;
     let vEnd = 0;
+
     if (typeof value == 'string') {
-    	vStart = parser.position - value.length - 2;
-      vEnd = parser.position - 2;
-    } else if (typeof value == 'number' || typeof value == 'boolean') {
-      vStart = parser.position - (value + '').length;
-	    vEnd = parser.position;
-    } else if (value == null) {
-      vStart = parser.position - 4;
-			vEnd = parser.position;
+      vEnd = input.substring(0, parser.position).lastIndexOf('"') + 1;
+      vStart = vEnd - value.length - 1;
+    } else if (typeof value == 'number') {
+      vEnd = parser.position - 1;
+      vStart = vEnd - ('' + value).length;
+    } else {
+      vEnd = parser.position;
+      vStart = vEnd - ('' + value).length;
     }
-    if (cursorPosition > vStart && cursorPosition < vEnd) {
-    	 console.log(value + ':\t', toJsonPath(stack));
-       // TODO: abort parsing
+
+    if (cursorPosition >= vStart && cursorPosition <= vEnd) {
+      document.getElementById('value').value = value + '';
+      document.getElementById('path').value = toJsonPath(stack);
+
+      matched = true;
+
+      const jsonObject = JSON.parse(input);
+      const result = jsonpath.query(jsonObject, toJsonPath(stack));
+
+      document.getElementById('check').value = result.length ? result[0] + '' : result + '';
+
+      //console.log(value, '\t', result, '\t', toJsonPath(stack));
+      // TODO: abort parsing
     }
+
 		if (stack.length && stack[stack.length-1].type == 'k') {
     	stack.pop();
     }
@@ -71,6 +87,12 @@ evalInput = () => {
 
 
   parser.write(input).close();
+
+  if (!matched) {
+    document.getElementById('value').value = 'Select a value';
+    document.getElementById('check').value = '';
+    document.getElementById('path').value = '';
+  }
 }
 
 toJsonPath = stack => {
@@ -86,7 +108,11 @@ toJsonPath = stack => {
     if (item.type == 'a') {
     	path += '[' + item.index + ']';
     } else if (item.type == 'k') {
-    	path += '.[\'' + item.value + '\']';
+      if (/^[$_a-zA-Z]+[$_a-zA-Z0-9]*$/.test(item.value)) {
+        path += '.' + item.value;
+      } else {
+        path += '["' + item.value + '"]';  
+      }
     }
   }
   
@@ -94,3 +120,14 @@ toJsonPath = stack => {
 };
 
 
+formatJson = () => {
+  const elem = document.getElementById('jsonInput');
+  const formatted = JSON.stringify(JSON.parse(elem.value), undefined, 2);
+  elem.value = formatted;
+}
+
+minifyJson = () => {
+  const elem = document.getElementById('jsonInput');
+  const formatted = JSON.stringify(JSON.parse(elem.value));
+  elem.value = formatted;
+}
