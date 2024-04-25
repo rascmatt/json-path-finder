@@ -4,6 +4,10 @@ JSON Path Finder is a user-friendly tool designed to simplify the process of fin
 
 <img src="img.png" alt="JSON Path Finder Screenshot" width="700"/>
 
+## Live Demo
+
+You can access a live demo of the JSON Path Finder at [https://rascmatt.github.io/](https://rascmatt.github.io/).
+
 ## How to Use
 
 1. Open the JSON Path Finder in your browser.
