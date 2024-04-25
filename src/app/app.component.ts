@@ -26,14 +26,18 @@ export interface KeyToken extends Token {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'jsonpath';
+  title = 'Json Path Finder';
 
-  inputJson: string = '{"key1": "value1", "key2": { "k2.1": "v2.1" }, "key3": ["k3.v1", {"k3.k2": "k3.v2"}], "key4": "value4"}';
+  inputJson: string = '{"firstName":"John","lastName":"doe","age":26,"address":{"streetAddress":"naist street","city":"Nara","postalCode":"630-0192"},"phoneNumbers":[{"type":"iPhone","number":"0123-4567-8888"},{"type":"home","number":"0123-4567-8910"}]}';
 
   matchAll: boolean = false;
   selectedValue: string = '';
   jsonPath: string = '';
   evaluatedValue: string = '';
+
+  constructor() {
+    this.onFormatJson();
+  }
 
   onFormatJson() {
     this.inputJson = this.formatJson(this.inputJson);
