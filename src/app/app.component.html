@@ -18,9 +18,15 @@
                       name="input-json" class="clr-col-12 json-area" [(ngModel)]="inputJson"
                       (selectionchange)="onSelectionChange($event)"></textarea>
             <clr-control-helper>
-              <div class="btn-group">
-                <button class="btn slim" (click)="onFormatJson()">Format</button>
-                <button class="btn slim" (click)="onMinifyJson()">Minify</button>
+              <div class="clr-col-12 clr-row">
+                <div class="btn-group">
+                  <button class="btn slim" (click)="onFormatJson()">Format</button>
+                  <button class="btn slim" (click)="onMinifyJson()">Minify</button>
+                </div>
+                <clr-checkbox-wrapper>
+                  <input type="checkbox" clrCheckbox name="options1" [(ngModel)]="matchAll"/>
+                  <label>Match all in list</label>
+                </clr-checkbox-wrapper>
               </div>
             </clr-control-helper>
           </clr-textarea-container>

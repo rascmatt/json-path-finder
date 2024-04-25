@@ -30,6 +30,7 @@ export class AppComponent {
 
   inputJson: string = '{"key1": "value1", "key2": { "k2.1": "v2.1" }, "key3": ["k3.v1", {"k3.k2": "k3.v2"}], "key4": "value4"}';
 
+  matchAll: boolean = false;
   selectedValue: string = '';
   jsonPath: string = '';
   evaluatedValue: string = '';
@@ -57,11 +58,8 @@ export class AppComponent {
       path: result.path,
       json: JSON.parse(this.inputJson),
     });
-    this.evaluatedValue = evaluated + '';
 
-    if (this.evaluatedValue != this.selectedValue) {
-      window.alert('The selected value does not match the evaluated value.');
-    }
+    this.evaluatedValue = evaluated.length > 1 ? evaluated.join(', ') : evaluated[0] + '';
   }
 
   public formatJson(input: string): string {
@@ -123,7 +121,7 @@ export class AppComponent {
       }
 
       if (cursorIndex >= vStart && cursorIndex <= vEnd) {
-        resultPath = this.toJsonPath(stack);
+        resultPath = this.toJsonPath(stack, this.matchAll);
         resultValue = value;
 
         // TODO: abort parsing
@@ -158,7 +156,7 @@ export class AppComponent {
     return {path: resultPath, value: resultValue};
   }
 
-  private toJsonPath(stack: (ObjectToken | ArrayToken | KeyToken)[]): string {
+  private toJsonPath(stack: (ObjectToken | ArrayToken | KeyToken)[], matchAll: boolean): string {
 
     let path = '$';
 
@@ -168,7 +166,7 @@ export class AppComponent {
 
     for (let token of stack) {
       if (token.type == 'a') {
-        path += '[' + token.index + ']';
+        path += '[' + (matchAll ? ':' : token.index) + ']';
       } else if (token.type == 'k') {
         if (/^[$_a-zA-Z]+[$_a-zA-Z0-9]*$/.test(token.value)) {
           path += '.' + token.value;
