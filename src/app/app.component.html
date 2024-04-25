@@ -14,9 +14,8 @@
         <form clrForm class="clr-col-12">
           <clr-textarea-container>
             <label class="clr-col-12">JSON Input</label>
-            <textarea clrTextarea placeholder="{ ... }"
-                      name="input-json" class="clr-col-12 json-area" [(ngModel)]="inputJson"
-                      (selectionchange)="onSelectionChange($event)"></textarea>
+            <div clrTextarea class="app-ace-editor clr-col-12" #editor
+                 (selectionchange)="onSelectionChange()"></div>
             <clr-control-helper>
               <div class="clr-col-12 clr-row">
                 <div class="btn-group">

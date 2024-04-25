@@ -6,11 +6,12 @@
   margin: auto;
 }
 
-.json-area {
-  width: 100%;
-  min-height: 300px;
-}
-
 .btn-group {
   margin-top: 2px;
+}
+
+.app-ace-editor {
+  border: 2px solid #e7e7e7;
+  width: 100%;
+  min-height: 300px;
 }

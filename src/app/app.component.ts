@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as Clarinet from 'clarinet';
 import {JSONPath} from "jsonpath-plus";
+import * as ace from "ace-builds";
+import {Ace} from "ace-builds";
+import Editor = Ace.Editor;
 
 export interface Token {
   type: 'o' | 'a' | 'k';
@@ -25,8 +28,11 @@ export interface KeyToken extends Token {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'Json Path Finder';
+
+  @ViewChild("editor") private editorRef: ElementRef<HTMLElement> = {} as ElementRef<HTMLElement>;
+  editor: Ace.Editor = {} as Editor;
 
   inputJson: string = '{"firstName":"John","lastName":"doe","age":26,"address":{"streetAddress":"naist street","city":"Nara","postalCode":"630-0192"},"phoneNumbers":[{"type":"iPhone","number":"0123-4567-8888"},{"type":"home","number":"0123-4567-8910"}]}';
 
@@ -39,17 +45,51 @@ export class AppComponent {
     this.onFormatJson();
   }
 
+  ngAfterViewInit(): void {
+    ace.config.set('basePath', 'https://unpkg.com/ace-builds@1.4.12/src-noconflict');
+
+    this.editor = ace.edit(this.editorRef.nativeElement);
+    this.editor.setTheme("ace/theme/textmate");
+    this.editor.session.setMode("ace/mode/json");
+    this.editor.setOptions({
+      fontSize: "14px",
+      showPrintMargin: false,
+      showLineNumbers: true,
+      tabSize: 2,
+    });
+
+    this.editor.setValue(this.inputJson);
+    this.editor.clearSelection();
+    this.editor.focus();
+
+    this.editor.on('change', () => {
+      this.inputJson = this.editor.getValue();
+    });
+  }
+
   onFormatJson() {
     this.inputJson = this.formatJson(this.inputJson);
+
+    if (this.editor?.setValue) {
+      this.editor.setValue(this.inputJson);
+    }
   }
 
   onMinifyJson() {
     this.inputJson = this.minifyJson(this.inputJson);
+
+    if (this.editor?.setValue) {
+      this.editor.setValue(this.inputJson);
+    }
   }
 
-  onSelectionChange(event: Event) {
-    const target = event.target as HTMLTextAreaElement;
-    const result = this.getJsonPath(this.inputJson, target.selectionStart);
+  onSelectionChange() {
+
+    let selectionStart = this.editor.getSelection().getRange().start;
+    let document = this.editor.getSession().getDocument(); // Get the document
+    let index = document.positionToIndex(selectionStart); // Convert the position to an index
+
+    const result = this.getJsonPath(this.inputJson, index);
 
     if (!result || result.path == undefined) {
       return;
