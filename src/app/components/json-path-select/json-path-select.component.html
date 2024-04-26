@@ -1,0 +1,25 @@
+<form clrForm class="clr-col-12">
+  <clr-textarea-container>
+    <label class="clr-col-12">{{title}}</label>
+    <div clrTextarea class="app-ace-editor clr-col-12" #editor
+         (selectionchange)="onSelectionChange()"></div>
+    <clr-control-helper>
+      <div class="clr-col-12 clr-row">
+        <div class="btn-group">
+          <button class="btn slim" (click)="onFormatJson()">Format</button>
+          <button class="btn slim" (click)="onMinifyJson()">Minify</button>
+        </div>
+        <clr-checkbox-wrapper *ngIf="showMatchAll">
+          <input type="checkbox" clrCheckbox name="options1" (change)="onSelectionChange()"
+                 [(ngModel)]="matchAll"/>
+          <label>Match all in list</label>
+        </clr-checkbox-wrapper>
+      </div>
+    </clr-control-helper>
+  </clr-textarea-container>
+  <clr-input-container *ngIf="showPath">
+    <label class="clr-col-12">JSON Path</label>
+    <input class="clr-col-12" clrInput placeholder="$.path.to.value" name="json-path"
+           (input)="onChangeJsonPath()" [(ngModel)]="jsonPath" size="40">
+  </clr-input-container>
+</form>

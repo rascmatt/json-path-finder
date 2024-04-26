@@ -1,0 +1,43 @@
+<div class="content-banner clr-row clr-col-3">
+  <form clrForm class="clr-col-12">
+    <div class="clr-row">
+      <clr-input-container class="clr-col-6">
+        <label class="clr-col-3">URL</label>
+        <input class="clr-col-9" clrInput placeholder="https://my.test.io/abc?q=def" name="json-path" size="50">
+      </clr-input-container>
+    </div>
+    <div class="clr-row">
+      <clr-select-container class="clr-col-6">
+        <label class="clr-col-3">Method</label>
+        <select class="clr-col-9" clrSelect name="options">
+          <option value="get">GET</option>
+          <option value="post">POST</option>
+          <option value="put">PUT</option>
+          <option value="delete">DELETE</option>
+        </select>
+      </clr-select-container>
+    </div>
+    <div class="clr-row" *ngFor="let header of headers; index as i;">
+      <clr-input-container class="clr-col-6">
+        <label class="clr-col-3">Header</label>
+        <input class="clr-col-9" clrInput placeholder="Label" name="json-path" size="18" [(ngModel)]="header.key"
+               (input)="headerChanged(i)">
+      </clr-input-container>
+      <clr-input-container class="clr-col-6">
+        <label class="clr-col-3">Value</label>
+        <input class="clr-col-9" clrInput placeholder="Value" name="json-path" size="18" [(ngModel)]="header.key"
+               (input)="headerChanged(i)">
+      </clr-input-container>
+    </div>
+    <clr-textarea-container>
+      <label class="clr-col-12">Request</label>
+      <div clrTextarea class="app-ace-editor clr-col-12" #request></div>
+      <clr-control-helper>
+        <div class="clr-col-12 clr-row">
+          <button class="btn slim">Test</button>
+        </div>
+      </clr-control-helper>
+    </clr-textarea-container>
+  </form>
+  <app-json-path-select [title]="'Response'" [showPath]="false" [showMatchAll]="false"></app-json-path-select>
+</div>

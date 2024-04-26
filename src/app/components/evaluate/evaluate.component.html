@@ -1,0 +1,9 @@
+<div class="content-banner clr-row clr-col-8" style="margin-top:-30px">
+  <app-json-path-select [(input)]="inputJson" (pathSelected)="onJsonPathSelect($event)"></app-json-path-select>
+  <form clrForm class="clr-col-12">
+    <clr-textarea-container>
+      <label class="clr-col-12">Evaluation Results</label>
+      <div clrTextarea class="app-ace-editor clr-col-12" #result></div>
+    </clr-textarea-container>
+  </form>
+</div>
