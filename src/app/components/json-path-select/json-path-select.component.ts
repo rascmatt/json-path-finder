@@ -96,10 +96,24 @@ export class JsonPathSelectComponent implements AfterViewInit {
     const parser = Clarinet.parser();
     const stack: (ObjectToken | ArrayToken | KeyToken)[] = [];
 
+    const handleKey = (key: string) => {
+      stack.push({type: 'k', value: key});
+
+      const vEnd = input.substring(0, parser.position).lastIndexOf('"') + 1;
+      const vStart = vEnd - key.length - 1;
+
+      if (cursorIndex >= vStart && cursorIndex <= vEnd) {
+        resultPath = this.toJsonPath(stack, this.matchAll);
+        resultValue = null; // We don't know the value, as the key has been selected.
+
+        // TODO: abort parsing
+      }
+    }
+
     parser.onopenobject = key => {
       stack.push({'type': 'o'})
       if (key) {
-        stack.push({'type': 'k', 'value': key});
+        handleKey(key);
       }
     };
 
@@ -107,9 +121,7 @@ export class JsonPathSelectComponent implements AfterViewInit {
       stack.push({type: 'a', index: 0});
     };
 
-    parser.onkey = key => {
-      stack.push({type: 'k', value: key});
-    };
+    parser.onkey = handleKey;
 
     parser.onvalue = value => {
 
@@ -163,7 +175,11 @@ export class JsonPathSelectComponent implements AfterViewInit {
     parser.oncloseobject = close;
     parser.onclosearray = close;
 
-    parser.write(input);
+    try {
+      parser.write(input);
+    } catch (e) {
+      console.error(e);
+    }
 
     return {path: resultPath, value: resultValue};
   }
@@ -212,7 +228,7 @@ export class JsonPathSelectComponent implements AfterViewInit {
 
     for (let token of stack) {
       if (token.type == 'a') {
-        path += '[' + (matchAll ? ':' : token.index) + ']';
+        path += '[' + (matchAll ? '*' : token.index) + ']';
       } else if (token.type == 'k') {
         if (/^[$_a-zA-Z]+[$_a-zA-Z0-9]*$/.test(token.value)) {
           path += '.' + token.value;
@@ -223,5 +239,5 @@ export class JsonPathSelectComponent implements AfterViewInit {
     }
 
     return path;
-  };
+  }
 }
