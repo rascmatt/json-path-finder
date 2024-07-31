@@ -98,7 +98,9 @@ export class JsonPathSelectComponent implements AfterViewInit {
 
     parser.onopenobject = key => {
       stack.push({'type': 'o'})
-      stack.push({'type': 'k', 'value': key});
+      if (key) {
+        stack.push({'type': 'k', 'value': key});
+      }
     };
 
     parser.onopenarray = () => {
