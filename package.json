@@ -19,8 +19,8 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@cds/core": "^6.10.0",
-    "@clr/angular": "^16.3.7",
-    "@clr/ui": "^16.3.7",
+    "@clr/angular": "~16.5.4",
+    "@clr/ui": "~16.5.4",
     "@types/clarinet": "^0.12.3",
     "ace-builds": "^1.33.1",
     "clarinet": "^0.12.6",
@@ -31,8 +31,8 @@
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.8",
-    "@angular/cli": "^16.2.8",
+    "@angular-devkit/build-angular": "~16.2.16",
+    "@angular/cli": "~16.2.16",
     "@angular/compiler-cli": "^16.2.0",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",
@@ -42,5 +42,21 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.1.3"
+  },
+  "overrides": {
+    "@babel/helpers": "^7.29.2",
+    "@babel/runtime": "^7.29.2",
+    "@babel/plugin-transform-modules-systemjs": "^7.29.4",
+    "@tootallnate/once": "^3.0.1",
+    "ajv": "^8.20.0",
+    "serialize-javascript": "^7.0.5",
+    "tar": "^7.5.15",
+    "tmp": "^0.2.5",
+    "send": "^0.19.2",
+    "serve-static": "^1.16.3",
+    "ws": "^8.20.1",
+    "postcss": "^8.5.14",
+    "vite": "^4.5.14",
+    "socket.io-parser": "^4.2.6"
   }
 }
